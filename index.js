@@ -16,6 +16,19 @@ app.get("/cards", async (request, response) => {
   }
 });
 
+app.post("/cards", async (request, response) => {
+  try {
+    const { question, answer, side, categories } = request.body;
+    const newCard = await db.query(
+      "INSERT INTO cards (question, answer, side, categories) VALUES($1, $2, $3, $4) RETURNING *",
+      [question, answer, side, categories]
+    );
+    response.json(newCard.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`app has started on port ${PORT}`)
 });
