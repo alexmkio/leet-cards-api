@@ -43,6 +43,18 @@ app.put("/cards/:id", async (request, response) => {
   }
 });
 
+app.delete("/cards/:id", async (request, response) => {
+  try {
+    const { id } = request.params;
+    const deleteCard = await db.query("DELETE FROM cards WHERE id = $1", [
+      id
+    ]);
+    response.json("The card has been deleted!");
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`app has started on port ${PORT}`)
 });
