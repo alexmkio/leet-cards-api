@@ -29,6 +29,20 @@ app.post("/cards", async (request, response) => {
   }
 });
 
+app.put("/cards/:id", async (request, response) => {
+  try {
+    const { id } = request.params;
+    const { answer } = request.body;
+    const updateCard = await db.query(
+      "UPDATE cards SET answer = $1 WHERE id = $2",
+      [answer, id]
+    );
+    response.json("The answer was updated!");
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`app has started on port ${PORT}`)
 });
