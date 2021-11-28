@@ -8,4 +8,8 @@ describe('Landing user flows', () => {
     cy.url().should('include', '/')
   });
 
+  it('The page should have a header', () => {
+    cy.get('h1').contains('Welcome to LEET CARDS')
+  })
+
 });
