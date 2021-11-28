@@ -1,0 +1,28 @@
+name: Development
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - name: Checkout 🛎️
+      uses: actions/checkout@v2
+      
+    - name: Run Cypress suite
+      uses: cypress-io/github-action@v2
+      with:
+          start: npm start
+          working-directory: client
+          
+    - name: Checkout 🛎️
+      uses: actions/checkout@v2
