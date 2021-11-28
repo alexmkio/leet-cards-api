@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "question": "Is your name Alex?",
+    "answer": "Yes",
+    "side": "FE",
+    "categories": [
+      "JavaScript"
+    ]
+  },
+  {
+    "id": 2,
+    "question": "Is Yoda a dog?",
+    "answer": "No",
+    "side": "BE",
+    "categories": [
+      "CSS"
+    ]
+  },
+  {
+    "id": 3,
+    "question": "Is an Florida stupid?",
+    "answer": "YESYESYES",
+    "side": "FE",
+    "categories": [
+      "HTML"
+    ]
+  }
+]
