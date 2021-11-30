@@ -16,6 +16,18 @@ app.get("/cards", async (request, response) => {
   }
 });
 
+app.get("/cards/:id", async (request, response) => {
+  try {
+    const { id } = request.params;
+    const card = await db.query("SELECT * FROM cards WHERE id = $1",
+      [id]
+    );
+    response.json(card.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
 app.post("/cards", async (request, response) => {
   try {
     const { question, answer, side, categories } = request.body;
