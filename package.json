@@ -10,7 +10,10 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",
     "server": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "postinstall": "tsc",
+    "watch-node": "nodemon index.js",
+    "watch-ts": "tsc -w"
   },
   "author": "Alex Kio",
   "license": "ISC",
