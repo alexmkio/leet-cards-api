@@ -72,6 +72,9 @@ app.use(express.json());
  */
 
 app.get("/cards", async (request: Request, response: Response) => {
+  if (request.header('apiKey') !== process.env.API_KEY) {
+    return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+  }
   try {
     const allCards = await db.query("SELECT * FROM cards");
     response.json(allCards.rows);
@@ -83,6 +86,9 @@ app.get("/cards", async (request: Request, response: Response) => {
 });
 
 app.get("/cards/:id", async (request: Request, response: Response) => {
+  if (request.header('apiKey') !== process.env.API_KEY) {
+    return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+  }
   try {
     const { id } = request.params;
     const card = await db.query("SELECT * FROM cards WHERE id = $1",
@@ -97,6 +103,9 @@ app.get("/cards/:id", async (request: Request, response: Response) => {
 });
 
 app.post("/cards", async (request: Request, response: Response) => {
+  if (request.header('apiKey') !== process.env.API_KEY) {
+    return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+  }
   try {
     const { question, answer, side, categories } = request.body;
     const newCard = await db.query(
@@ -112,6 +121,9 @@ app.post("/cards", async (request: Request, response: Response) => {
 });
 
 app.put("/cards/:id", async (request: Request, response: Response) => {
+  if (request.header('apiKey') !== process.env.API_KEY) {
+    return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+  }
   try {
     const { id } = request.params;
     const { answer } = request.body;
@@ -128,6 +140,9 @@ app.put("/cards/:id", async (request: Request, response: Response) => {
 });
 
 app.delete("/cards/:id", async (request: Request, response: Response) => {
+  if (request.header('apiKey') !== process.env.API_KEY) {
+    return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+  }
   try {
     const { id } = request.params;
     const deleteCard = await db.query("DELETE FROM cards WHERE id = $1", [
