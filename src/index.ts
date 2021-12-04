@@ -12,11 +12,13 @@ const rateLimit = require('express-rate-limit')
 const { body, check } = require('express-validator')
 import Pool from 'pg-pool';
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 /**
  * Database Connection
  */
 
-if (process.env.NODE_ENV === 'production') {
+if (isProduction) {
   var db = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -50,9 +52,13 @@ const app = express();
  *  App Configuration
  */
 
+const origin = {
+  origin: isProduction ? 'https://leet-cards.vercel.app' : '*',
+}
+
 app.use(compression())
 app.use(helmet());
-app.use(cors());
+app.use(cors(origin));
 app.use(express.json());
 
 /**
