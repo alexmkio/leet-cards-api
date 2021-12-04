@@ -40,7 +40,7 @@ db
  * App Variables
  */
 
-const PORT: number = parseInt(process.env.PORT as string) || 6666;
+const PORT: number = parseInt(process.env.PORT as string) || 6565;
 const app = express();
 
 /**
