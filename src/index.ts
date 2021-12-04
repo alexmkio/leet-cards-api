@@ -56,9 +56,15 @@ const origin = {
   origin: isProduction ? 'https://leet-cards.vercel.app' : '*',
 }
 
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 10,
+})
+
 app.use(compression())
 app.use(helmet());
 app.use(cors(origin));
+app.use(limiter)
 app.use(express.json());
 
 /**
