@@ -9,7 +9,6 @@ import cors from "cors";
 import helmet from "helmet";
 const compression = require('compression')
 const rateLimit = require('express-rate-limit')
-const { body, check } = require('express-validator')
 import Pool from 'pg-pool';
 
 const isProduction = process.env.NODE_ENV === 'production'
