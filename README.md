@@ -73,6 +73,20 @@ This API was built in [Node.js](https://nodejs.org/) and [TypeScript](https://ww
   </tr>
 </table>
 
+### Shape Of A Flash Card Object
+```
+{
+  "id": "number",
+  "question": "string",
+  "answer": "string",
+  "side": "string",
+  "categories": [
+      "string",
+      ...
+  ]
+}
+```
+
 ## Install
 1. Clone down this repository `git clone https://github.com/alexmkio/leet-cards-api`
 2. CD into your local clone `cd leet-cards-api`
