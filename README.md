@@ -37,67 +37,39 @@ This API was built in [Node.js](https://nodejs.org/) and [TypeScript](https://ww
     <td align="center">Sample Successful Response</td>
   </tr>
   <tr>
-    <td>Get all cards</td>
+    <td>Get all flash cards</td>
     <td>/cards/</td>
     <td>GET</td>
     <td>none</td>
-    <td>an array of all family objects:<br />[ { id: 1, mod: 2, tests: [ 1, 2 ], title: "Kitties", datasets: [ "dataset #1", "dataset #2" ] }, ... ]</td>
+    <td>An array of all flash card objects</td>
   </tr>
   <tr>
-    <td>Get a single test</td>
-    <td>https://mythical-wars-api.herokuapp.com/tests/:id</td>
+    <td>Get a single flash card</td>
+    <td>/cards/:id</td>
     <td>GET</td>
     <td>none</td>
-    <td>A single test object:<br />{ id: 1, test_name: "orangeKittyNames", instructions: null, expected: "[`Tiger`, `Snickers`]", methods: ["`filter`","`reduce`"], family: 1 }</td>
+    <td>A single flash card object</td>
   </tr>
   <tr>
-    <td>Get all test attempts given a certain test and user # (route does not accomplish this currently)</td>
-    <td>https://mythical-wars-api.herokuapp.com/attempts</td>
-    <td>GET</td>
-    <td>none</td>
-    <td>An array of attempt objects:<br />[ { id: 1, user_id: 1, test_id: 1, passing: true, code: "testing", result: "not bad" } ]</td>
-  </tr>
-  <tr>
-    <td>Create a new user</td>
-    <td>https://mythical-wars-api.herokuapp.com/user</td>
+    <td>Create a new flash card</td>
+    <td>/cards/</td>
     <td>POST</td>
-    <td>{ user_name: "string", current_mod: number }</td>
-    <td>A new user object:<br />{ id: number, user_name: "string", current_mod: number }</td>
+    <td>{ question: "string", answer: "string", side: "string", categories: [ "string", ... ] }</td>
+    <td>A new flash card object</td>
   </tr>
   <tr>
-    <td>Create a new family</td>
-    <td>https://mythical-wars-api.herokuapp.com/families</td>
-    <td>POST</td>
-    <td>{ mod: number, title: "string", datasets: [ "dataset1", "dataset2" ] }</td>
-    <td>A new family object:<br />{ id: number, mod: number, title: "string", datasets: [ "dataset1", "dataset2" ] }</td>
-  </tr>
-  <tr>
-    <td>Create a new test</td>
-    <td>https://mythical-wars-api.herokuapp.com/tests</td>
-    <td>POST</td>
-    <td>{ test_name: "string", instructions: "string", expected: "string", methods: [ "string1", "string2" ], family: number }</td>
-    <td>A new test object:<br />{ id: number, test_name: "string", instructions: "string", expected: "string", methods: [ "string1", "string2" ], family: number }</td>
-  </tr>
-  <tr>
-    <td>Create a new attempt</td>
-    <td>https://mythical-wars-api.herokuapp.com/attempts</td>
-    <td>POST</td>
-    <td>{ user_id: number, test_id: number, passing: boolean, code: "string", result: "string" }</td>
-    <td>A new attempt object:<br />{ id: number, user_id: number, test_id: number, passing: boolean, code: "string", result: "string" }</td>
-  </tr>
-  <tr>
-    <td>Update an attempt</td>
-    <td>https://mythical-wars-api.herokuapp.com/attempts/:id</td>
+    <td>Update an existing flash card</td>
+    <td>/cards/:id</td>
     <td>PUT</td>
-    <td>{ passing: boolean, code: "string", result: "string" }</td>
-    <td>"Attempt was updated!"</td>
+    <td>{ answer: "string" }</td>
+    <td>"The answer was updated!"</td>
   </tr>
   <tr>
-    <td>Delete an attempt</td>
-    <td>https://mythical-wars-api.herokuapp.com/attempts/:id</td>
+    <td>Delete an existing flash card</td>
+    <td>/cards/:id</td>
     <td>DELETE</td>
     <td>none</td>
-    <td>"Attempt was deleted!"</td>
+    <td>"The card has been deleted!"</td>
   </tr>
 </table>
 
