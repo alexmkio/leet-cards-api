@@ -7,13 +7,17 @@ dotenv.config();
 import express, { Request, Response } from 'express';
 import cors from "cors";
 import helmet from "helmet";
+const compression = require('compression')
+const rateLimit = require('express-rate-limit')
 import Pool from 'pg-pool';
+
+const isProduction = process.env.NODE_ENV === 'production'
 
 /**
  * Database Connection
  */
 
-if (process.env.NODE_ENV === "production") {
+if (isProduction) {
   var db = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -47,8 +51,19 @@ const app = express();
  *  App Configuration
  */
 
+const origin = {
+  origin: isProduction ? 'https://leet-cards.vercel.app' : '*',
+}
+
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 10,
+})
+
+app.use(compression())
 app.use(helmet());
-app.use(cors());
+app.use(cors(origin));
+app.use(limiter)
 app.use(express.json());
 
 /**
@@ -56,6 +71,9 @@ app.use(express.json());
  */
 
 app.get("/cards", async (request: Request, response: Response) => {
+  if (request.header('apiKey') !== process.env.API_KEY) {
+    return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+  }
   try {
     const allCards = await db.query("SELECT * FROM cards");
     response.json(allCards.rows);
@@ -67,6 +85,9 @@ app.get("/cards", async (request: Request, response: Response) => {
 });
 
 app.get("/cards/:id", async (request: Request, response: Response) => {
+  if (request.header('apiKey') !== process.env.API_KEY) {
+    return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+  }
   try {
     const { id } = request.params;
     const card = await db.query("SELECT * FROM cards WHERE id = $1",
@@ -81,6 +102,9 @@ app.get("/cards/:id", async (request: Request, response: Response) => {
 });
 
 app.post("/cards", async (request: Request, response: Response) => {
+  if (request.header('apiKey') !== process.env.API_KEY) {
+    return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+  }
   try {
     const { question, answer, side, categories } = request.body;
     const newCard = await db.query(
@@ -96,6 +120,9 @@ app.post("/cards", async (request: Request, response: Response) => {
 });
 
 app.put("/cards/:id", async (request: Request, response: Response) => {
+  if (request.header('apiKey') !== process.env.API_KEY) {
+    return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+  }
   try {
     const { id } = request.params;
     const { answer } = request.body;
@@ -112,6 +139,9 @@ app.put("/cards/:id", async (request: Request, response: Response) => {
 });
 
 app.delete("/cards/:id", async (request: Request, response: Response) => {
+  if (request.header('apiKey') !== process.env.API_KEY) {
+    return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+  }
   try {
     const { id } = request.params;
     const deleteCard = await db.query("DELETE FROM cards WHERE id = $1", [
