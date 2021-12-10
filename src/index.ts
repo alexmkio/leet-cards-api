@@ -57,7 +57,7 @@ const origin = {
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 10,
+  max: 200,
 })
 
 app.use(compression())
