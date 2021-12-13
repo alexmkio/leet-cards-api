@@ -2,14 +2,14 @@
  * Required External Modules
  */
 
-import * as dotenv from "dotenv";
-dotenv.config();
-import express, { Request, Response } from 'express';
-import cors from "cors";
-import helmet from "helmet";
+import * as dotenv from "dotenv"
+dotenv.config()
+import express, { Request, Response } from 'express'
+import cors from "cors"
+import helmet from "helmet"
 const compression = require('compression')
 const rateLimit = require('express-rate-limit')
-import Pool from 'pg-pool';
+import Pool from 'pg-pool'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -23,8 +23,8 @@ if (isProduction) {
     ssl: {
       rejectUnauthorized: false
     }
-  });
-  db.connect();
+  })
+  db.connect()
 } else {
   var db = new Pool({
     user: process.env.PG_USER,
@@ -32,8 +32,8 @@ if (isProduction) {
     host: process.env.PG_HOST,
     database: process.env.PG_DATABASE,
     port: parseInt(process.env.PG_PORT as string),
-  });
-};
+  })
+}
 
 db
 
@@ -44,16 +44,17 @@ db
  * App Variables
  */
 
-const PORT: number = parseInt(process.env.PORT as string) || 6565;
-const app = express();
+const PORT: number = parseInt(process.env.PORT as string) || 6565
+const app = express()
 
 /**
  *  App Configuration
  */
 
-const origin = {
-  origin: isProduction ? 'https://leet-cards.vercel.app' : '*',
-}
+// const origin = {
+//   origin: isProduction ? 'https://leet-cards.vercel.app' : '*',
+// }
+// app.use(cors(origin))
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
@@ -61,10 +62,10 @@ const limiter = rateLimit({
 })
 
 app.use(compression())
-app.use(helmet());
-app.use(cors(origin));
+app.use(helmet())
+app.use(cors())
 app.use(limiter)
-app.use(express.json());
+app.use(express.json())
 
 /**
  * Routes
@@ -75,68 +76,68 @@ app.get("/cards", async (request: Request, response: Response) => {
     return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
   }
   try {
-    const allCards = await db.query("SELECT * FROM cards");
-    response.json(allCards.rows);
+    const allCards = await db.query("SELECT * FROM cards")
+    response.json(allCards.rows)
   } catch (error) {
     if (error instanceof Error) {
-      response.status(500).send(error.message);
+      response.status(500).send(error.message)
     }
   }
-});
+})
 
 app.get("/cards/:id", async (request: Request, response: Response) => {
   if (request.header('apiKey') !== process.env.API_KEY) {
     return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
   }
   try {
-    const { id } = request.params;
+    const { id } = request.params
     const card = await db.query("SELECT * FROM cards WHERE id = $1",
       [id]
-    );
-    response.json(card.rows[0]);
+    )
+    response.json(card.rows[0])
   } catch (error) {
     if (error instanceof Error) {
-      response.status(500).send(error.message);
+      response.status(500).send(error.message)
     }
   }
-});
+})
 
 app.post("/cards", async (request: Request, response: Response) => {
   if (request.header('apiKey') !== process.env.API_KEY) {
     return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
   }
   try {
-    const { question, answer, side, categories } = request.body;
+    const { question, answer, side, categories } = request.body
     const newCard = await db.query(
       "INSERT INTO cards (question, answer, side, categories) VALUES($1, $2, $3, $4) RETURNING *",
       [question, answer, side, categories]
     );
-    response.json(newCard.rows[0]);
+    response.json(newCard.rows[0])
   } catch (error) {
     if (error instanceof Error) {
-      response.status(500).send(error.message);
+      response.status(500).send(error.message)
     }
   }
-});
+})
 
 app.put("/cards/:id", async (request: Request, response: Response) => {
   if (request.header('apiKey') !== process.env.API_KEY) {
     return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
   }
   try {
-    const { id } = request.params;
-    const { answer } = request.body;
+    const { id } = request.params
+    const { answer } = request.body
     const updateCard = await db.query(
       "UPDATE cards SET answer = $1 WHERE id = $2",
       [answer, id]
-    );
-    response.json("The answer was updated!");
+    )
+    response.json("The answer was updated!")
   } catch (error) {
     if (error instanceof Error) {
-      response.status(500).send(error.message);
+      response.status(500).send(error.message)
     }
   }
-});
+})
 
 app.delete("/cards/:id", async (request: Request, response: Response) => {
   if (request.header('apiKey') !== process.env.API_KEY) {
@@ -146,11 +147,11 @@ app.delete("/cards/:id", async (request: Request, response: Response) => {
     const { id } = request.params;
     const deleteCard = await db.query("DELETE FROM cards WHERE id = $1", [
       id
-    ]);
-    response.json("The card has been deleted!");
+    ])
+    response.json("The card has been deleted!")
   } catch (error) {
     if (error instanceof Error) {
-      response.status(500).send(error.message);
+      response.status(500).send(error.message)
     }
   }
 });
@@ -160,5 +161,5 @@ app.delete("/cards/:id", async (request: Request, response: Response) => {
  */
 
 app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+  console.log(`Listening on port ${PORT}`)
+})
