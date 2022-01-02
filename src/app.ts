@@ -26,14 +26,22 @@ export default function (database: Database) {
 
   app.get("/", async (request: Request, response: Response) => {
     if (request.header('apiKey') !== process.env.API_KEY) {
-      return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+      return response.status(401).json({
+        status: 'error',
+        message: 'Unauthorized.'
+      })
     }
-    return response.status(200).json({ message: 'API Documentation: https://github.com/alexmkio/leet-cards-api' })
+    return response.status(200).json({
+      message: 'API Documentation: https://github.com/alexmkio/leet-cards-api'
+    })
   })
 
   app.get("/cards", async (request: Request, response: Response) => {
     if (request.header('apiKey') !== process.env.API_KEY) {
-      return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+      return response.status(401).json({
+        status: 'error',
+        message: 'Unauthorized.'
+      })
     }
     try {
       const allCards = await database.getCards()
@@ -47,7 +55,10 @@ export default function (database: Database) {
 
   app.get("/cards/:id", async (request: Request, response: Response) => {
     if (request.header('apiKey') !== process.env.API_KEY) {
-      return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+      return response.status(401).json({
+        status: 'error',
+        message: 'Unauthorized.'
+      })
     }
     try {
       const { id } = request.params
@@ -62,7 +73,10 @@ export default function (database: Database) {
   
   app.post("/cards", async (request: Request, response: Response) => {
     if (request.header('apiKey') !== process.env.API_KEY) {
-      return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+      return response.status(401).json({
+        status: 'error',
+        message: 'Unauthorized.'
+      })
     }
     try {
       const { question, answer, side, categories } = request.body
@@ -77,7 +91,10 @@ export default function (database: Database) {
   
   app.put("/cards/:id", async (request: Request, response: Response) => {
     if (request.header('apiKey') !== process.env.API_KEY) {
-      return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+      return response.status(401).json({
+        status: 'error',
+        message: 'Unauthorized.'
+      })
     }
     try {
       const { id } = request.params
@@ -93,10 +110,13 @@ export default function (database: Database) {
   
   app.delete("/cards/:id", async (request: Request, response: Response) => {
     if (request.header('apiKey') !== process.env.API_KEY) {
-      return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+      return response.status(401).json({
+        status: 'error',
+        message: 'Unauthorized.'
+      })
     }
     try {
-      const { id } = request.params;
+      const { id } = request.params
       const deleteCard = await database.deleteCard(id)
       response.json("The card has been deleted!")
     } catch (error) {
@@ -104,7 +124,7 @@ export default function (database: Database) {
         response.status(500).send(error.message)
       }
     }
-  });
+  })
 
   return app
 }
