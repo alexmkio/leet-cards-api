@@ -16,6 +16,13 @@ export default function (database) {
   app.use(limiter)
   app.use(express.json())
 
+  app.get("/", async (request: Request, response: Response) => {
+    if (request.header('apiKey') !== process.env.API_KEY) {
+      return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+    }
+    return response.status(200).json({ message: 'API Documentation: https://github.com/alexmkio/leet-cards-api' })
+  })
+
   app.get("/cards", async (request: Request, response: Response) => {
     if (request.header('apiKey') !== process.env.API_KEY) {
       return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
