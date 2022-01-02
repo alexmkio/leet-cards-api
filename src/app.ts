@@ -4,7 +4,15 @@ import helmet from "helmet"
 const compression = require('compression')
 const rateLimit = require('express-rate-limit')
 
-export default function (database) {
+interface Database {
+  getCards: Function;
+  getCard: Function;
+  addCard: Function;
+  updateCard: Function;
+  deleteCard: Function;
+}
+
+export default function (database: Database) {
   const app = express()
   const limiter = rateLimit({
     windowMs: 1 * 60 * 1000,
