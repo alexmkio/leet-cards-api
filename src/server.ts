@@ -7,4 +7,6 @@ const app = makeApp(database)
 
 const PORT: number = parseInt(process.env.PORT as string) || 6565
 
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
+const server = app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
+
+module.exports = server
