@@ -4,7 +4,7 @@ import helmet from "helmet"
 const compression = require('compression')
 const rateLimit = require('express-rate-limit')
 
-interface Database {
+interface Handlers {
   getCards: Function;
   getCard: Function;
   addCard: Function;
@@ -12,8 +12,8 @@ interface Database {
   deleteCard: Function;
 }
 
-export default function (database: Database) {
-  const app = express()
+export default function (handlers: Handlers) {
+const app = express()
   const limiter = rateLimit({
     windowMs: 1 * 60 * 1000,
     max: 200,
@@ -44,7 +44,7 @@ export default function (database: Database) {
       })
     }
     try {
-      const allCards = await database.getCards()
+      const allCards = await handlers.getCards()
       response.json(allCards.rows)
     } catch (error) {
       if (error instanceof Error) {
@@ -62,7 +62,7 @@ export default function (database: Database) {
     }
     try {
       const { id } = request.params
-      const card = await database.getCard(id)
+      const card = await handlers.getCard(id)
       response.json(card.rows[0])
     } catch (error) {
       if (error instanceof Error) {
@@ -80,7 +80,7 @@ export default function (database: Database) {
     }
     try {
       const { question, answer, side, categories } = request.body
-      const newCard = await database.addCard(question, answer, side, categories)
+      const newCard = await handlers.addCard(question, answer, side, categories)
       response.json(newCard.rows[0])
     } catch (error) {
       if (error instanceof Error) {
@@ -99,7 +99,7 @@ export default function (database: Database) {
     try {
       const { id } = request.params
       const { answer } = request.body
-      const updateCard = await database.updateCard(answer, id)
+      const updateCard = await handlers.updateCard(answer, id)
       response.json("The answer was updated!")
     } catch (error) {
       if (error instanceof Error) {
@@ -117,7 +117,7 @@ export default function (database: Database) {
     }
     try {
       const { id } = request.params
-      const deleteCard = await database.deleteCard(id)
+      const deleteCard = await handlers.deleteCard(id)
       response.json("The card has been deleted!")
     } catch (error) {
       if (error instanceof Error) {

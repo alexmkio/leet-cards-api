@@ -13,6 +13,16 @@ describe("Testing the Leet Cards API - Happy Paths", () => {
     expect(response.body.message).toBe('API Documentation: https://github.com/alexmkio/leet-cards-api')
 	})
 
+  it.only("Getting cards should return an array of cards", async () => {
+		const response = await request(server).get('/cards').set({
+      method: 'GET',
+      'apiKey': process.env.API_KEY
+    })
+		expect(response.status).toBe(200)
+    console.log('666', response.body)
+    expect(response.body)
+		})
+
 })
 
 describe("Testing the Leet Cards API - Sad Paths", () => {

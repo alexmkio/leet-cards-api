@@ -62,5 +62,5 @@ const deleteCard = async (id: number) => {
   return deleted
 }
 
-const database = { getCards, getCard, addCard, updateCard, deleteCard }
-export default database
+const handlers = { getCards, getCard, addCard, updateCard, deleteCard }
+export default handlers

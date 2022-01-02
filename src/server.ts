@@ -1,9 +1,9 @@
 import * as dotenv from "dotenv"
 dotenv.config()
-import database from './database'
+import handlers from './handlers'
 import makeApp from './app'
 
-const app = makeApp(database)
+const app = makeApp(handlers)
 
 const PORT: number = parseInt(process.env.PORT as string) || 6565
 
