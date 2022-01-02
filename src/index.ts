@@ -71,6 +71,13 @@ app.use(express.json())
  * Routes
  */
 
+app.get("/", async (request: Request, response: Response) => {
+  if (request.header('apiKey') !== process.env.API_KEY) {
+    return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
+  }
+  response.status(200).json({ status: true, message: 'Documentation: https://github.com/alexmkio/leet-cards-api' })
+})
+
 app.get("/cards", async (request: Request, response: Response) => {
   if (request.header('apiKey') !== process.env.API_KEY) {
     return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
@@ -144,7 +151,7 @@ app.delete("/cards/:id", async (request: Request, response: Response) => {
     return response.status(401).json({ status: 'error', message: 'Unauthorized.' })
   }
   try {
-    const { id } = request.params;
+    const { id } = request.params
     const deleteCard = await db.query("DELETE FROM cards WHERE id = $1", [
       id
     ])
@@ -154,12 +161,14 @@ app.delete("/cards/:id", async (request: Request, response: Response) => {
       response.status(500).send(error.message)
     }
   }
-});
+})
 
 /**
  * Server Activation
  */
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`)
 })
+
+module.exports = server
