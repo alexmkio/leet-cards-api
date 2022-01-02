@@ -1,4 +1,4 @@
-const express = require('express')
+import express from 'express'
 const app = express()
 import router from './router'
 import cors from "cors"
@@ -16,7 +16,6 @@ const limiter = rateLimit({
   max: 200,
 })
 app.use(limiter)
-app.use(express.json())
 
 const PORT: number = parseInt(process.env.PORT as string) || 6565
 
