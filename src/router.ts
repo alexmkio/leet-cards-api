@@ -52,16 +52,20 @@ router.get("/cards/:id", async (request: Request, response: Response) => {
 })
 
 router.post("/cards",
-  body('question', 'This must be a string with length')
-    .isString().notEmpty(),
-  body('answer', 'This must be a string with length')
-    .isString().notEmpty(),
-  body('side', 'This must be a string with length')
-    .isString().notEmpty(),
+  body('question', 'The question must be a string with length')
+    .exists().withMessage('A key of question must exist')
+    .if(body('question').exists()).isString().notEmpty(),
+  body('answer', 'The answer must be a string with length')
+    .exists().withMessage('A key of answer must exist')
+    .if(body('answer').exists()).isString().notEmpty(),
+  body('side', 'The side must be a string with length')
+    .exists().withMessage('A key of side must exist')
+    .if(body('side').exists()).isString().notEmpty(),
   // is either FE or BE
-  body('categories', 'This must be an array with length')
-    .isArray().notEmpty(),
-  body('categories.*', 'This must be an array of strings with length')
+  body('categories', 'The categories must be an array with length')
+    .exists().withMessage('A key of categories must exist')
+    .if(body('categories').exists()).isArray().notEmpty(),
+  body('categories.*', 'Categories must be an array of strings with length')
     .isString().notEmpty(),
   async (request: Request, response: Response) => {
     if (request.header('apiKey') !== process.env.API_KEY) {
@@ -87,8 +91,9 @@ router.post("/cards",
 )
 
 router.put("/cards/:id",
-  body('answer', 'This must be a string with length')
-    .isString().notEmpty(),
+  body('answer', 'The answer must be a string with length')
+    .exists().withMessage('A key of answer must exist')
+    .if(body('answer').exists()).isString().notEmpty(),
   async (request: Request, response: Response) => {
   if (request.header('apiKey') !== process.env.API_KEY) {
     return response.status(401).json({
