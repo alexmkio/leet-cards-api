@@ -53,19 +53,15 @@ router.get("/cards/:id", async (request: Request, response: Response) => {
 
 router.post(
   "/cards",
-  body('question')
-    .isString().withMessage('This must be a string with length')
-    .notEmpty().withMessage('This must be a string with length'),
-  body('answer')
-    .isString().withMessage('This must be a string with length')
-    .notEmpty().withMessage('This must be a string with length'),
-  body('side')
-    .isString().withMessage('This must be a string with length')
-    .notEmpty().withMessage('This must be a string with length'),
+  body('question', 'This must be a string with length')
+    .isString().notEmpty(),
+  body('answer', 'This must be a string with length')
+    .isString().notEmpty(),
+  body('side', 'This must be a string with length')
+    .isString().notEmpty(),
   // is either FE or BE
-  body('categories')
-    .isArray().withMessage('This must be an array with length')
-    .notEmpty().withMessage('This must be an array with length'),
+  body('categories', 'This must be an array with length')
+    .isArray().notEmpty(),
     // .if(body('categories').isArray({ min: 1 })),
   // if it has length each element is a STRING
   // https://express-validator.github.io/docs/validation-chain-api.html#ifcondition
@@ -94,9 +90,8 @@ router.post(
 
 router.put(
   "/cards/:id",
-  body('answer')
-    .isString().withMessage('This must be a string with length')
-    .notEmpty().withMessage('This must be a string with length'),
+  body('answer', 'This must be a string with length')
+    .isString().notEmpty(),
   async (request: Request, response: Response) => {
   if (request.header('apiKey') !== process.env.API_KEY) {
     return response.status(401).json({
