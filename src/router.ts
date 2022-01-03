@@ -53,10 +53,14 @@ router.get("/cards/:id", async (request: Request, response: Response) => {
 
 router.post(
   "/cards",
-  body('question').isString(),
-  body('answer').isString(),
-  body('side').isString(),
-  body('categories').isArray(),
+  body('question').isString().notEmpty(),
+  body('answer').isString().notEmpty(),
+  body('side').isString().notEmpty(),
+  // is either FE or BE
+  body('categories').isArray().notEmpty(),
+    // .if(body('categories').isArray({ min: 1 })),
+  // if it has length each element is a STRING
+  // https://express-validator.github.io/docs/validation-chain-api.html#ifcondition
   async (request: Request, response: Response) => {
     if (request.header('apiKey') !== process.env.API_KEY) {
       return response.status(401).json({
@@ -82,7 +86,7 @@ router.post(
 
 router.put(
   "/cards/:id",
-  body('answer').isString(),
+  body('answer').isString().notEmpty(),
   async (request: Request, response: Response) => {
   if (request.header('apiKey') !== process.env.API_KEY) {
     return response.status(401).json({
