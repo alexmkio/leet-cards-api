@@ -1,9 +1,9 @@
 import express from 'express'
 const app = express()
-const compression = require('compression')
+import compression from 'compression'
 import helmet from "helmet"
 import cors from "cors"
-const rateLimit = require('express-rate-limit')
+import rateLimit from 'express-rate-limit'
 import * as dotenv from "dotenv"
 dotenv.config()
 import router from './router'

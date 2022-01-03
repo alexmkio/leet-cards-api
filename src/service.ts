@@ -22,4 +22,4 @@ if (isProduction) {
   })
 }
 
-module.exports = db
+export default db
