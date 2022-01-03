@@ -1,12 +1,12 @@
 import express from 'express'
 const app = express()
-import router from './router'
-import cors from "cors"
-import helmet from "helmet"
 const compression = require('compression')
+import helmet from "helmet"
+import cors from "cors"
 const rateLimit = require('express-rate-limit')
 import * as dotenv from "dotenv"
 dotenv.config()
+import router from './router'
 
 app.use(compression())
 app.use(helmet())
@@ -25,4 +25,4 @@ if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
 }
 
-// module.exports = server
+export default app

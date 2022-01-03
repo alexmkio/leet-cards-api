@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 const router = express.Router()
 const Controller = require('./controller');
-router.use(express.json())
+// router.use(express.json())
 
 router.get("/", async (request: Request, response: Response) => {
   if (request.header('apiKey') !== process.env.API_KEY) {
