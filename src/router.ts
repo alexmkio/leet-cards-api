@@ -60,8 +60,8 @@ router.post("/cards",
     .if(body('answer').exists()).isString().notEmpty(),
   body('side', 'The side must be a string with length')
     .exists().withMessage('A key of side must exist')
-    .if(body('side').exists()).isString().notEmpty(),
-  // is either FE or BE
+    .if(body('side').exists()).isString().notEmpty()
+    .isIn(['FE', 'BE']).withMessage("Side must be either 'FE' or 'BE'"),
   body('categories', 'The categories must be an array with length')
     .exists().withMessage('A key of categories must exist')
     .if(body('categories').exists()).isArray().notEmpty(),
