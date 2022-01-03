@@ -1,10 +1,29 @@
+import express from 'express'
+const app = express()
+const compression = require('compression')
+import helmet from "helmet"
+import cors from "cors"
+const rateLimit = require('express-rate-limit')
 import * as dotenv from "dotenv"
 dotenv.config()
-import database from './database'
-import makeApp from './app'
+import router from './router'
 
-const app = makeApp(database)
+app.use(compression())
+
+app.use(helmet())
+
+app.use(cors())
+
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 200,
+})
+app.use(limiter)
 
 const PORT: number = parseInt(process.env.PORT as string) || 6565
 
+app.use(router)
+
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
+
+export default app
