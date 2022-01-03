@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 const router = express.Router()
 import { body, validationResult } from 'express-validator'
-const Controller = require('./controller')
+import Controller from './controller'
 router.use(express.json())
 
 router.get("/", async (request: Request, response: Response) => {
@@ -51,8 +51,7 @@ router.get("/cards/:id", async (request: Request, response: Response) => {
   }
 })
 
-router.post(
-  "/cards",
+router.post("/cards",
   body('question', 'This must be a string with length')
     .isString().notEmpty(),
   body('answer', 'This must be a string with length')
@@ -71,7 +70,7 @@ router.post(
         message: 'Unauthorized.'
       })
     }
-    const errors = validationResult(request);
+    const errors = validationResult(request)
     if (!errors.isEmpty()) {
       return response.status(400).json({ errors: errors.array() })
     }
@@ -87,8 +86,7 @@ router.post(
   }
 )
 
-router.put(
-  "/cards/:id",
+router.put("/cards/:id",
   body('answer', 'This must be a string with length')
     .isString().notEmpty(),
   async (request: Request, response: Response) => {
@@ -98,7 +96,7 @@ router.put(
       message: 'Unauthorized.'
     })
   }
-  const errors = validationResult(request);
+  const errors = validationResult(request)
     if (!errors.isEmpty()) {
       return response.status(400).json({ errors: errors.array() })
     }

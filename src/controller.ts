@@ -1,4 +1,4 @@
-const Service = require('./service');
+import Service from './service'
 
 const Controller = {
   getCards: async () => {
@@ -6,7 +6,7 @@ const Controller = {
     return allCards
   },
   
-  getCard: async (id: number) => {
+  getCard: async (id: string) => {
     const card = await Service.query("SELECT * FROM cards WHERE id = $1",
       [id]
     )
@@ -26,7 +26,7 @@ const Controller = {
     return allCards
   },
   
-  updateCard: async (answer: string, id: number) => {
+  updateCard: async (answer: string, id: string) => {
     const update = await Service.query(
       "UPDATE cards SET answer = $1 WHERE id = $2",
       [answer, id]
@@ -34,7 +34,7 @@ const Controller = {
     return update
   },
   
-  deleteCard: async (id: number) => {
+  deleteCard: async (id: string) => {
     const deleted = await Service.query("DELETE FROM cards WHERE id = $1", [
       id
     ])
@@ -42,4 +42,4 @@ const Controller = {
   }
 }
 
-module.exports = Controller;
+export default Controller
