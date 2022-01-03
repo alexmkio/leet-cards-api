@@ -80,13 +80,20 @@ router.post(
   }
 )
 
-router.put("/cards/:id", async (request: Request, response: Response) => {
+router.put(
+  "/cards/:id",
+  body('answer').isString(),
+  async (request: Request, response: Response) => {
   if (request.header('apiKey') !== process.env.API_KEY) {
     return response.status(401).json({
       status: 'error',
       message: 'Unauthorized.'
     })
   }
+  const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      return response.status(400).json({ errors: errors.array() })
+    }
   try {
     const { id } = request.params
     const { answer } = request.body
