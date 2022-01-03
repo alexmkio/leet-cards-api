@@ -62,9 +62,8 @@ router.post(
   // is either FE or BE
   body('categories', 'This must be an array with length')
     .isArray().notEmpty(),
-    // .if(body('categories').isArray({ min: 1 })),
-  // if it has length each element is a STRING
-  // https://express-validator.github.io/docs/validation-chain-api.html#ifcondition
+  body('categories.*', 'This must be an array of strings with length')
+    .isString().notEmpty(),
   async (request: Request, response: Response) => {
     if (request.header('apiKey') !== process.env.API_KEY) {
       return response.status(401).json({
